@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.attt.vazitaapp.data.manager.TokenManager
+import com.attt.vazitaapp.data.model.User
 import com.attt.vazitaapp.data.repository.UserRepository
 import com.attt.vazitaapp.data.requestModel.LogoutResponse
 import com.attt.vazitaapp.data.requestModel.SignInResponse
@@ -31,6 +32,16 @@ class UserViewModel@Inject constructor(
     val role: LiveData<String> get() = _role
     private val _centerId = MutableLiveData<String>()
     val centerId: LiveData<String> get() = _centerId
+
+    private val _user = MutableLiveData<User>()
+    val user: LiveData<User> get() = _user
+
+    fun setUser(user: User) {
+        _user.value = user
+    }
+    fun getUser(): User? {
+        return _user.value
+    }
 
     fun setUserName(name: String) {
         _userName.value = name
@@ -70,6 +81,17 @@ class UserViewModel@Inject constructor(
 
 
 
+    }
+
+    suspend fun getUserInfo(){
+        val user = userRepository?.getUserInfo()
+        if(user!=null && user.data!=null){
+
+            setUser(user.data)
+            setRole(user.data.designation)
+            setUserName(user.data.username)
+            setCenterId(user.data.idCentre.toString())
+        }
     }
 
 }

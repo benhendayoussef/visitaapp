@@ -3,6 +3,8 @@ package com.attt.vazitaapp.data.repository
 import android.content.Context
 import android.util.Log
 import com.attt.vazitaapp.data.manager.TokenManager
+import com.attt.vazitaapp.data.model.User
+import com.attt.vazitaapp.data.requestModel.GetUserInfoResponse
 import com.attt.vazitaapp.data.requestModel.LogoutResponse
 import com.attt.vazitaapp.data.source.remote.Services
 import com.attt.vazitaapp.data.requestModel.SignInRequest
@@ -38,6 +40,7 @@ class UserRepository (
                     if(signinResponse.token!=null){
                         TokenManager.getInstance().saveToken(signinResponse.token)
                         Log.d("UserRepository", "userLocally:"+userLocally)
+                        if(rememberMe)
                         userLocally?.saveUser(
                             username = signinResponse.username ?: "",
                             center = signinResponse.id_centre ?: "",
@@ -155,4 +158,45 @@ class UserRepository (
             }
         }
     }
+
+    suspend fun getUserInfo(): GetUserInfoResponse {
+        return withContext(Dispatchers.IO) {
+            try {
+
+                val call =
+                    Services.getClientService().getUserInfo()
+                val response = withContext(Dispatchers.IO) { call.execute() }
+                val signinResponse = response.body()
+                println("response code: ${response.code()}")
+                println("body: " + signinResponse)
+                if (signinResponse == null) {
+                    GetUserInfoResponse(
+                        response.code(),
+                        response.message(),
+                        null
+
+                    )
+
+                } else {
+
+                    Log.d("UserRepository", "Token:"+signinResponse.message)
+
+                    GetUserInfoResponse(
+                        code = response.code(),
+                        message = signinResponse.message ?: "",
+                        data = signinResponse.data
+                    )
+
+
+
+
+                }
+            } catch (e: Exception) {
+                GetUserInfoResponse(500, e.message.toString(), null)
+            }
+
+        }
+    }
+
+
 }

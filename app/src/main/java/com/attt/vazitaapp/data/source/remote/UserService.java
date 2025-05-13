@@ -1,12 +1,14 @@
 package com.attt.vazitaapp.data.source.remote;
 
 
+import com.attt.vazitaapp.data.requestModel.GetUserInfoResponse;
 import com.attt.vazitaapp.data.requestModel.LogoutResponse;
 import com.attt.vazitaapp.data.requestModel.SignInRequest;
 import com.attt.vazitaapp.data.requestModel.SignInResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface UserService {
@@ -23,6 +25,8 @@ public interface UserService {
     Call<SignInResponse> login(@Body SignInRequest signInRequest);
     @POST("api/v1/auth/logout")
     Call<LogoutResponse> logout();
+    @GET("api/v1/user")
+    Call<GetUserInfoResponse> getUserInfo();
 
 
 

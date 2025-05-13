@@ -49,13 +49,15 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             VazitaappTheme {
+                val navController = rememberNavController() // Better naming
                 val tokenManager = TokenManager.getInstance()
+                tokenManager.setNavController(navController)
                 val okHttpClient = OkHttpClient.Builder()
                     .addInterceptor(loggingInterceptor)
                     .addInterceptor(AuthInterceptor(tokenManager))
                     .build()
 
-                val Url = "https://6311-2c0f-f698-f048-9bb9-5db9-1bc4-497f-3487.ngrok-free.app"
+                val Url = "https://dream.serveo.net/"
                 val retrofit = Retrofit.Builder()
                     .baseUrl(Url)
                     .addConverterFactory(GsonConverterFactory.create())
@@ -66,7 +68,6 @@ class MainActivity : ComponentActivity() {
 
                 val animationSpeed = 1000
                 val duration = 1000
-                val navController = rememberNavController() // Better naming
                 val authViewModel: AuthentificationViewModel = viewModel()
                 val userViewModel: UserViewModel = viewModel()
                 val context = LocalContext.current

@@ -19,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -43,18 +44,19 @@ import com.attt.vazitaapp.view.page.SelectionDePiste
 @Composable
 fun MainApp(
 
-    navController: NavController,
+    mainnavController: NavController,
     userViewModel: UserViewModel
 ) {
 
     val coroutineScope = rememberCoroutineScope()
-    val userName by userViewModel.userName.observeAsState("")
-    val role by userViewModel.role.observeAsState("")
-    val centerId by userViewModel.centerId.observeAsState("")
+    val user by userViewModel.user.observeAsState()
 
     val animationSpeed = 1000
     val duration = 1000
     val navController = rememberNavController() // Better naming
+    LaunchedEffect(Unit) {
+        userViewModel.getUserInfo()
+    }
 
     Scaffold(
         topBar = {
@@ -74,17 +76,17 @@ fun MainApp(
 
                 ) {
                     Text(
-                        text = "Welcome $userName",
+                        text = "Welcome ${user?.username}",
                         fontSize = 36.sp,
                         color = MaterialTheme.colorScheme.onPrimary,
                     )
                     Text(
-                        text = "Role: $role",
+                        text = "Role: ${user?.designation}",
                         fontSize = 24.sp,
                         color = MaterialTheme.colorScheme.onPrimary,
                     )
                     Text(
-                        text = "Center ID: $centerId",
+                        text = "Center ID: ${user?.idCentre}",
                         fontSize = 24.sp,
                         color = MaterialTheme.colorScheme.onPrimary,
                     )
@@ -103,7 +105,7 @@ fun MainApp(
                                             print(it.code)
                                             when (it.code) {
                                                 200, 201 -> {
-                                                    navController.navigate("login")
+                                                    mainnavController.navigate("Login")
                                                 }
 
                                                 else -> {
@@ -116,21 +118,7 @@ fun MainApp(
                                                 }
 
                                             }
-                                            when (it.code) {
-                                                200, 201 -> {
-                                                    navController.navigate("login")
-                                                }
 
-                                                else -> {
-                                                    Toast.makeText(
-                                                        navController.context,
-                                                        it.message,
-                                                        Toast.LENGTH_LONG
-                                                    ).show()
-
-                                                }
-
-                                            }
                                         })
 
                                     } catch (e: Exception) {

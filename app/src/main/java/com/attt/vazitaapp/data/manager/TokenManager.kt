@@ -1,6 +1,7 @@
 package com.attt.vazitaapp.data.manager
 
 import android.util.Log
+import androidx.navigation.NavController
 import org.json.JSONObject
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -20,8 +21,16 @@ class TokenManager private constructor() {
         }
     }
 
+    private var navController: NavController?=null
     // Using nullable String for token
     private var token: String? = null
+
+    fun setNavController(navController: NavController) {
+        this.navController = navController
+    }
+    fun getNavController(): NavController? {
+        return navController
+    }
 
     // Method to save the token
     fun saveToken(newToken: String?) {
@@ -43,7 +52,7 @@ class TokenManager private constructor() {
     fun logout() {
         // Clear the token
         token = null
-
+        navController?.navigate("Login")
         // TODO: Implement navigation logic to login screen
         // This might look different depending on your app's navigation framework
         // For example in Android:
