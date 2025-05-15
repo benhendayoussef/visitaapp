@@ -1,4 +1,4 @@
-package com.attt.vazitaapp.view.page
+package com.attt.vazitaapp.view.page.adminAdjoint
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,35 +22,24 @@ import com.attt.vazitaapp.R
 import com.attt.visitaapp.view.component.CustomTextField
 
 @Composable
-fun SelectionDePiste(
+fun AdminAdjointMainPage(
     navController: NavController
 ) {
 
     var pisteId by remember { mutableStateOf("") }
 
     Column(
-        modifier = androidx.compose.ui.Modifier
+        modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Selection de Piste",
+            text = "Admin Page",
             fontSize = 24.sp,
             fontWeight = FontWeight.Black,
-            modifier = androidx.compose.ui.Modifier.padding(bottom = 16.dp)
-        )
-        CustomTextField(
-            value = pisteId,
-            onValueChange = { newValue ->
-                pisteId = newValue
-            },
-            placeholkder = "Entrez l'ID de piste",
-            label = "ID de piste",
-            icon = painterResource(id = R.drawable.route),
-            modifier = Modifier.padding(horizontal = 20.dp, vertical = 30.dp)
-                .fillMaxWidth(0.7f),
+            modifier = Modifier.padding(bottom = 16.dp)
         )
 
     }

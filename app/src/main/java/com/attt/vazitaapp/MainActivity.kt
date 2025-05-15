@@ -29,6 +29,7 @@ import com.attt.vazitaapp.data.repository.UserRepository
 import com.attt.vazitaapp.data.source.remote.Services
 import com.attt.vazitaapp.data.source.remote.UserService
 import com.attt.vazitaapp.modelView.AuthentificationViewModel
+import com.attt.vazitaapp.modelView.DossierViewModel
 import com.attt.vazitaapp.modelView.UserViewModel
 import com.attt.vazitaapp.ui.theme.VazitaappTheme
 import com.attt.vazitaapp.view.Login
@@ -70,13 +71,14 @@ class MainActivity : ComponentActivity() {
                 val duration = 1000
                 val authViewModel: AuthentificationViewModel = viewModel()
                 val userViewModel: UserViewModel = viewModel()
+                val dossierViewModel: DossierViewModel = viewModel()
                 val context = LocalContext.current
                 val repository=UserRepository(context)
                 userViewModel.setRepository(repository)
                 authViewModel.setUserRepository(repository)
                 NavHost(
                     navController = navController,
-                    startDestination = "SplashScreen",
+                    startDestination = "MainApp",
                 ) {
                     composable(
                         route = "SplashScreen",
@@ -109,7 +111,7 @@ class MainActivity : ComponentActivity() {
                         fadeOut(animationSpec = tween(duration))
                     }
                     ) {
-                        MainApp(navController,userViewModel=userViewModel)
+                        MainApp(navController,userViewModel=userViewModel,dossierViewModel=dossierViewModel)
                 }
                 }
             }

@@ -9,12 +9,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CalendarToday
+import androidx.compose.material.icons.filled.Reply
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -23,13 +26,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.attt.vazitaapp.R
-import com.attt.vazitaapp.modelView.AuthentificationViewModel
 import com.attt.vazitaapp.modelView.UserViewModel
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.getValue
@@ -38,24 +39,44 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.attt.vazitaapp.view.page.SelectionDePiste
+import com.attt.vazitaapp.modelView.DossierViewModel
+import com.attt.vazitaapp.view.page.adminAdjoint.AdminAdjointMainPage
+import com.attt.vazitaapp.view.page.inspecteurVisuel.ChapitrePage
+import com.attt.vazitaapp.view.page.inspecteurVisuel.FileDattente
+import com.attt.vazitaapp.view.page.inspecteurVisuel.SelectionDePiste
 
 
 @Composable
 fun MainApp(
 
     mainnavController: NavController,
-    userViewModel: UserViewModel
+    userViewModel: UserViewModel,
+    dossierViewModel:DossierViewModel,
 ) {
 
     val coroutineScope = rememberCoroutineScope()
     val user by userViewModel.user.observeAsState()
+    val role by userViewModel.role.observeAsState()
+    val pisteId by dossierViewModel.pisteId.observeAsState()
+    val dossier by dossierViewModel.selectedDossier.observeAsState()
 
     val animationSpeed = 1000
     val duration = 1000
     val navController = rememberNavController() // Better naming
+
+    LaunchedEffect(role) {
+        if(role=="ADMIN"){
+            navController.navigate("AdminAdjointMainPage")
+        }
+        else if(role=="INSPECTEUR"){
+            navController.navigate("SelectionPiste")
+        }
+
+    }
+
     LaunchedEffect(Unit) {
         userViewModel.getUserInfo()
+        dossierViewModel.updateDossierStructure()
     }
 
     Scaffold(
@@ -75,21 +96,41 @@ fun MainApp(
                     verticalAlignment = Alignment.CenterVertically
 
                 ) {
+                    Icon(
+                        imageVector = Icons.Default.Reply,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier
+                            .size(50.dp)
+                            .clickable{
+                                val didPop = navController.popBackStack()
+                                if (!didPop) {
+                                    navController.navigate("SelectionPiste")
+                                }
+                                dossierViewModel.resetChapitres()
+                            }
+                    )
+
                     Text(
                         text = "Welcome ${user?.username}",
                         fontSize = 36.sp,
                         color = MaterialTheme.colorScheme.onPrimary,
                     )
-                    Text(
-                        text = "Role: ${user?.designation}",
-                        fontSize = 24.sp,
-                        color = MaterialTheme.colorScheme.onPrimary,
-                    )
-                    Text(
-                        text = "Center ID: ${user?.idCentre}",
-                        fontSize = 24.sp,
-                        color = MaterialTheme.colorScheme.onPrimary,
-                    )
+                    pisteId?.let{
+                        Text(
+                            text = "Piste Id: ${pisteId}",
+                            fontSize = 24.sp,
+                            color = MaterialTheme.colorScheme.onPrimary,
+                        )
+
+                    }
+                    dossier?.let {
+                        Text(
+                            text = "selected Car: ${it.IMMATRICULATION}",
+                            fontSize = 24.sp,
+                            color = MaterialTheme.colorScheme.onPrimary,
+                        )
+                    }
 
                     Image(
                         painter = painterResource(id = R.drawable.logout_profile),
@@ -148,7 +189,41 @@ fun MainApp(
                                     scaleOut(targetScale = 1.5f, animationSpec = tween(500))
                         }
                     ) {
-                        SelectionDePiste(navController=navController)
+                        SelectionDePiste(navController=navController,
+                            dossierViewModel=dossierViewModel)
+                    }
+                    composable(
+                        route = "AdminAdjointMainPage",
+                        exitTransition = {
+                            fadeOut(animationSpec = tween(300)) +
+                                    scaleOut(targetScale = 1.5f, animationSpec = tween(500))
+                        }
+                    ) {
+                        AdminAdjointMainPage(navController=navController)
+                    }
+                    composable(
+                        route = "FileDattente",
+                        exitTransition = {
+                            fadeOut(animationSpec = tween(300)) +
+                                    scaleOut(targetScale = 1.5f, animationSpec = tween(500))
+                        }
+                    ) {
+                        FileDattente(
+                            navController=navController,
+                            dossierViewModel=dossierViewModel
+                        )
+                    }
+                    composable(
+                        route = "ChapitrePage",
+                        exitTransition = {
+                            fadeOut(animationSpec = tween(300)) +
+                                    scaleOut(targetScale = 1.5f, animationSpec = tween(500))
+                        }
+                    ) {
+                        ChapitrePage(
+                            navController=navController,
+                            dossierViewModel=dossierViewModel
+                        )
                     }
 
                 }
