@@ -27,14 +27,14 @@ private val DarkColorScheme = darkColorScheme(
 
 
 private val LightColorScheme = lightColorScheme(
-    background = Color(0xFFF5F8FC),       // Soft light blue/gray
-    primary = Color(0xFF2C5B9B),          // Same as dark mode for brand consistency
-    secondary = Color(0xFF4E7AB3),        // Slightly less saturated for light background
-    tertiary = Color(0xFF1A3C6C),         // Deeper color for accents
-    onPrimary = Color(0xFFFFFFFF),        // White text on primary
-    onSecondary = Color(0xFFFFFFFF),      // White text on secondary
-    onTertiary = Color(0xFFFFFFFF),       // White text on tertiary
-    onBackground = Color(0xFF000000),     // Dark text on light background
+    background = Color(0xFFF5F8FC),
+    primary = Color(0xFF2C5B9B),
+    secondary = Color(0xFF4E7AB3),
+    tertiary = Color(0xFF1A3C6C),
+    onPrimary = Color(0xFFFFFFFF),
+    onSecondary = Color(0xFFFFFFFF),
+    onTertiary = Color(0xFFFFFFFF),
+    onBackground = Color(0xFF000000),
 )
 
 @Composable

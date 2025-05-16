@@ -9,12 +9,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.attt.vazitaapp.modelView.DossierViewModel
+import com.attt.vazitaapp.modelView.UserViewModel
 
 
 @Composable
 fun ChapitrePage(
     navController: NavController,
     dossierViewModel: DossierViewModel,
+    userViewModel: UserViewModel
 ) {
 
     val chapterNavController = rememberNavController()
@@ -46,6 +48,20 @@ fun ChapitrePage(
                 navController=navController,
                 chapterNavController = chapterNavController,
                 dossierViewModel = dossierViewModel
+            )
+        }
+        composable(
+            route = "SubmitPage",
+            exitTransition = {
+                fadeOut(animationSpec = tween(300)) +
+                        scaleOut(targetScale = 1.5f, animationSpec = tween(500))
+            }
+        ) {
+            SubmitPage(
+                navController=navController,
+                chapterNavController = chapterNavController,
+                dossierViewModel = dossierViewModel,
+                userViewModel = userViewModel
             )
         }
     }

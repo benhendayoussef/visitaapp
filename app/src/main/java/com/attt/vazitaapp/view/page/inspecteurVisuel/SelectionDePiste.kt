@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +26,7 @@ import com.attt.vazitaapp.R
 import com.attt.vazitaapp.modelView.DossierViewModel
 import com.attt.visitaapp.view.component.CustomButton
 import com.attt.visitaapp.view.component.CustomTextField
+import kotlinx.coroutines.launch
 import kotlin.Int
 
 @Composable
@@ -33,7 +35,8 @@ fun SelectionDePiste(
     dossierViewModel: DossierViewModel,
 ) {
 
-    val pisteId by dossierViewModel.posteId.observeAsState("")
+    val pisteId by dossierViewModel.pisteId.observeAsState("")
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -58,18 +61,19 @@ fun SelectionDePiste(
             icon = painterResource(id = R.drawable.route),
             modifier = Modifier.padding(horizontal = 20.dp, vertical = 30.dp)
                 .fillMaxWidth(0.7f)
-                .clickable{
-                    navController.navigate("FileDattente"){
-                        popUpTo("SelectionDePiste")
-                    }
-                },
+
         )
         CustomButton(
             text = "Valider",
             color = MaterialTheme.colorScheme.primary,
             onClick = {
-                // Handle button click
-                navController.navigate("FileDattente")
+
+
+                coroutineScope.launch {
+                    dossierViewModel.loadDossier()
+                    if (dossierViewModel.dossier.value != null)
+                        navController.navigate("FileDattente")
+                }
             },
             modifier = Modifier.padding(horizontal = 20.dp, vertical = 30.dp)
                 .fillMaxWidth(0.7f)

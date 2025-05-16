@@ -1,10 +1,10 @@
 package com.attt.vazitaapp.data.model
 
 data class PointDefault(
-    val CODE_POINT:Int,
-    val LIBELLE_POINT:String,
-    val CODE_CHAPITRE: Int,
-    val alterations: List<Alteration>,
+    val codePoint:Int,
+    val libellePoint:String,
+    val codeChapitre: Int,
+    val alterationResponses: List<Alteration>,
     val isViewed: Boolean = false,
 
-)
+    )

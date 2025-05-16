@@ -89,7 +89,7 @@ class UserViewModel@Inject constructor(
 
             setUser(user.data)
             setRole(user.data.designation)
-            setUserName(user.data.username)
+            setUserName(user.data.firstName+" "+user.data.lastName)
             setCenterId(user.data.idCentre.toString())
         }
     }

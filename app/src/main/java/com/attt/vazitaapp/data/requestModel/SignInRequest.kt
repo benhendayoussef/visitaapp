@@ -1,6 +1,6 @@
 package com.attt.vazitaapp.data.requestModel
 
 data class SignInRequest(
-    val username:String,
+    val id:String,
     val password:String,
 )

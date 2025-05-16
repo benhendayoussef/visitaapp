@@ -1,17 +1,12 @@
 package com.attt.vazitaapp.view.page.inspecteurVisuel
 
-import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleOut
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -29,9 +24,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.navigation.NavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.attt.vazitaapp.modelView.DossierViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -41,6 +33,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.attt.vazitaapp.data.model.Chapitre
+import com.attt.visitaapp.view.component.CustomButton
 
 
 @Composable
@@ -63,12 +56,27 @@ fun ChapitreView(
                 chapitre = chapitres?.get(it),
                 modifier = Modifier,
                 onClick = {
-                    dossierViewModel.setChapitreViewed(chapitres?.get(it)?.CODE_CHAPITRE?:-1)
+                    dossierViewModel.setChapitreViewed(chapitres?.get(it)?.codeChapitre?:-1)
                     dossierViewModel.setSelectedChapitre(chapitres?.get(it))
                     chapterNavController.navigate("PointPage")
                 },
 
             )
+        }
+        item{
+            CustomButton(
+                text = "Enregistrer",
+                color= MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .padding(16.dp)
+                    .height(70.dp)
+                    .fillMaxWidth(),
+                onClick = {
+                    chapterNavController.navigate("SubmitPage")
+                }
+
+            )
+
         }
 
     }
@@ -89,7 +97,7 @@ fun ChapitreItem(chapitre: Chapitre?, modifier: Modifier = Modifier, onClick: ()
         ),
         colors = CardDefaults.elevatedCardColors(
             containerColor = if (chapitre.isViewed)
-                MaterialTheme.colorScheme.surface
+                MaterialTheme.colorScheme.tertiary
             else
                 MaterialTheme.colorScheme.surface
         ),
@@ -118,7 +126,7 @@ fun ChapitreItem(chapitre: Chapitre?, modifier: Modifier = Modifier, onClick: ()
                         modifier = Modifier.fillMaxSize()
                     ) {
                         Text(
-                            text = chapitre.CODE_CHAPITRE.toString(),
+                            text = chapitre.codeChapitre.toString(),
                             style = MaterialTheme.typography.titleMedium,
                             fontSize = 26.sp,
                             fontWeight = FontWeight.Bold,
@@ -131,7 +139,7 @@ fun ChapitreItem(chapitre: Chapitre?, modifier: Modifier = Modifier, onClick: ()
 
                 // Chapter title
                 Text(
-                    text = chapitre.LIBELLE_CHAPITRE,
+                    text = chapitre.libelleChapitre,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Medium,
                     maxLines = 2,

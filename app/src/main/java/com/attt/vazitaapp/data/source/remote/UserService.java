@@ -25,7 +25,7 @@ public interface UserService {
     Call<SignInResponse> login(@Body SignInRequest signInRequest);
     @POST("api/v1/auth/logout")
     Call<LogoutResponse> logout();
-    @GET("api/v1/user")
+    @GET("api/v1/users")
     Call<GetUserInfoResponse> getUserInfo();
 
 

@@ -1,7 +1,10 @@
 package com.attt.vazitaapp.data.manager
 
+import android.app.Activity
+import android.content.Intent
 import android.util.Log
 import androidx.navigation.NavController
+import com.attt.vazitaapp.MainActivity
 import org.json.JSONObject
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -51,8 +54,13 @@ class TokenManager private constructor() {
     // Logout method to clear the token
     fun logout() {
         // Clear the token
+
         token = null
-        navController?.navigate("Login")
+        val activity:Activity?= MainActivity.getInstance()
+        val intent = Intent(activity, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        activity?.startActivity(intent)
+        activity?.finish()
         // TODO: Implement navigation logic to login screen
         // This might look different depending on your app's navigation framework
         // For example in Android:

@@ -1,10 +1,10 @@
 package com.attt.vazitaapp.data.model
 
 data class Alteration(
-    val CODE_ALTERATION:Int,
-    val LIBELLE_ALTERATION:String,
-    val CODE_CHAPITRE:Int,
-    val CODE_POINT:Int,
+    val codeAlteration:Int,
+    val libelleAlteration:String,
     val isSelected:Boolean = false,
+    val codeChapitre:Int,
+    val codePoint:Int,
 
-)
+    )

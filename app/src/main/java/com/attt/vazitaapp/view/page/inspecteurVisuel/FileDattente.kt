@@ -31,24 +31,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.attt.vazitaapp.R
 import com.attt.vazitaapp.modelView.DossierViewModel
-import com.attt.visitaapp.view.component.CustomTextField
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import com.attt.vazitaapp.data.model.Dossier
@@ -62,11 +50,9 @@ fun FileDattente(
 
     val pisteId by dossierViewModel.posteId.observeAsState(0)
     val dossiers by dossierViewModel.dossier.observeAsState(emptyList())
-    LaunchedEffect(Unit) {
-        dossierViewModel.loadDossier()
-    }
 
 
+    if(dossiers!=null)
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -118,7 +104,7 @@ fun DossierItem(dossier: Dossier, modifier: Modifier = Modifier) {
                     .padding(8.dp)
             ) {
                 Text(
-                    text = "Dossier N° ${dossier.N_DOSSIER}",
+                    text = "Dossier N° ${dossier.numDossier}",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onPrimary
@@ -126,9 +112,9 @@ fun DossierItem(dossier: Dossier, modifier: Modifier = Modifier) {
             }
 
             // Dossier details
-            InfoRow("Numéro de châssis", dossier.NUM_CHASSIS)
-            InfoRow("Immatriculation", dossier.IMMATRICULATION)
-            InfoRow("Piste", dossier.C_PISTE)
+            InfoRow("Numéro de châssis", dossier.numChassis)
+            InfoRow("Immatriculation", dossier.immatriculation)
+            InfoRow("Piste", dossier.cPiste.toString())
 
             // Date with special styling
             Row(
@@ -144,7 +130,7 @@ fun DossierItem(dossier: Dossier, modifier: Modifier = Modifier) {
                     fontWeight = FontWeight.Medium
                 )
                 Text(
-                    text = dossier.DATE_HEURE_ENREGISTREMENT,
+                    text = dossier.dateHeureEnregistrement,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.primary
@@ -206,7 +192,7 @@ fun ModernDossierItem(dossier: Dossier, modifier: Modifier = Modifier) {
                     modifier = Modifier.padding(bottom = 8.dp)
                 ) {
                     Text(
-                        text = "N° ${dossier.N_DOSSIER}",
+                        text = "N° ${dossier.numDossier}",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -228,7 +214,7 @@ fun ModernDossierItem(dossier: Dossier, modifier: Modifier = Modifier) {
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = dossier.DATE_HEURE_ENREGISTREMENT,
+                        text = dossier.dateHeureEnregistrement,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -244,21 +230,21 @@ fun ModernDossierItem(dossier: Dossier, modifier: Modifier = Modifier) {
             DetailRow(
                 icon = Icons.Default.DirectionsCar,
                 label = "Immatriculation",
-                value = dossier.IMMATRICULATION,
+                value = dossier.immatriculation,
                 color = MaterialTheme.colorScheme.tertiary
             )
 
             DetailRow(
                 icon = Icons.Default.QrCode2,
                 label = "N° Châssis",
-                value = dossier.NUM_CHASSIS,
+                value = dossier.numChassis,
                 color = MaterialTheme.colorScheme.secondary
             )
 
             DetailRow(
                 icon = Icons.Default.Route,
                 label = "Piste",
-                value = dossier.C_PISTE,
+                value = dossier.cPiste.toString(),
                 color = MaterialTheme.colorScheme.error
             )
         }

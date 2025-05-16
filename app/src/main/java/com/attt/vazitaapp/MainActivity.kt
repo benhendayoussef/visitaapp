@@ -26,6 +26,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.attt.vazitaapp.data.manager.TokenManager
 import com.attt.vazitaapp.data.repository.UserRepository
+import com.attt.vazitaapp.data.source.remote.DossierService
 import com.attt.vazitaapp.data.source.remote.Services
 import com.attt.vazitaapp.data.source.remote.UserService
 import com.attt.vazitaapp.modelView.AuthentificationViewModel
@@ -41,6 +42,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : ComponentActivity() {
+    companion object {
+        private var instance: MainActivity? = null
+        fun getInstance(): MainActivity? = instance
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -58,14 +64,16 @@ class MainActivity : ComponentActivity() {
                     .addInterceptor(AuthInterceptor(tokenManager))
                     .build()
 
-                val Url = "https://dream.serveo.net/"
+                val Url = "https://9266-41-228-195-99.ngrok-free.app/"
                 val retrofit = Retrofit.Builder()
                     .baseUrl(Url)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(okHttpClient)
                     .build()
                 val userService: UserService = retrofit.create(UserService::class.java)
+                val dossierService: DossierService = retrofit.create(DossierService::class.java)
                 Services.setClientService(userService)
+                Services.setDossierService(dossierService)
 
                 val animationSpeed = 1000
                 val duration = 1000
@@ -78,7 +86,7 @@ class MainActivity : ComponentActivity() {
                 authViewModel.setUserRepository(repository)
                 NavHost(
                     navController = navController,
-                    startDestination = "MainApp",
+                    startDestination = "SplashScreen",
                 ) {
                     composable(
                         route = "SplashScreen",

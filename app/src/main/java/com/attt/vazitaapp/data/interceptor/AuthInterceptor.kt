@@ -14,6 +14,7 @@ class AuthInterceptor(private val tokenManager: TokenManager) : Interceptor {
 
         // Attach access token to the request
         val token = tokenManager.getToken()
+        Log.d("AuthInterceptor", "Access token: $token")
         if (token == null) {
             Log.d("AuthInterceptor", "Access token is null")
         }

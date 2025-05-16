@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Reply
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -112,22 +111,22 @@ fun MainApp(
                     )
 
                     Text(
-                        text = "Welcome ${user?.username}",
-                        fontSize = 36.sp,
+                        text = "Welcome ${user?.firstName} ${user?.lastName}",
+                        fontSize = 24.sp,
                         color = MaterialTheme.colorScheme.onPrimary,
                     )
                     pisteId?.let{
                         Text(
                             text = "Piste Id: ${pisteId}",
-                            fontSize = 24.sp,
+                            fontSize = 18.sp,
                             color = MaterialTheme.colorScheme.onPrimary,
                         )
 
                     }
                     dossier?.let {
                         Text(
-                            text = "selected Car: ${it.IMMATRICULATION}",
-                            fontSize = 24.sp,
+                            text = "selected Car: ${it.immatriculation}",
+                            fontSize = 18.sp,
                             color = MaterialTheme.colorScheme.onPrimary,
                         )
                     }
@@ -222,7 +221,8 @@ fun MainApp(
                     ) {
                         ChapitrePage(
                             navController=navController,
-                            dossierViewModel=dossierViewModel
+                            dossierViewModel=dossierViewModel,
+                            userViewModel = userViewModel
                         )
                     }
 

@@ -2,7 +2,6 @@ package com.attt.vazitaapp.data.model
 
 data class User(
     val idUser: String,
-    val username: String,
     val firstName: String,
     val lastName: String,
     val firstNameA: String,

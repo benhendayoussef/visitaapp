@@ -77,7 +77,8 @@ class UserRepository (
                     Services.getClientService().logout()
                 val response = withContext(Dispatchers.IO) { call.execute() }
                 val signinResponse = response.body()
-                println("response code: ${response.code()}")
+                val code=response.code()
+                println("response code: ${code}")
                 println("body: " + signinResponse)
                 if (signinResponse == null) {
                     LogoutResponse(response.code(),response.message(), null)
@@ -90,7 +91,7 @@ class UserRepository (
 
                     }
                     LogoutResponse(
-                        code = response.code(),
+                        code = code,
                         message = signinResponse.message ?: "",
                         data = signinResponse.data ?: ""
                     )
@@ -178,8 +179,6 @@ class UserRepository (
                     )
 
                 } else {
-
-                    Log.d("UserRepository", "Token:"+signinResponse.message)
 
                     GetUserInfoResponse(
                         code = response.code(),
